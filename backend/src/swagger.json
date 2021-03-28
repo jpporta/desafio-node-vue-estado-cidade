@@ -1,0 +1,11 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Desafio Zoox",
+    "description": "Projeto de avaliação Desenvolvedor",
+    "version": "1.0.0",
+    "contact": {
+      "email": "jpedro.porta@gmail.com"
+    }
+  }
+}
