@@ -7,5 +7,650 @@
     "contact": {
       "email": "jpedro.porta@gmail.com"
     }
+  },
+  "paths": {
+    "/api/cities": {
+      "post": {
+        "tags": [
+          "Cidades"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "description": "chave de api",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Criar uma cidade",
+        "description": "Criar uma nova cidade pertencente a um estado já criado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Nome da cidade"
+                  },
+                  "stateId": {
+                    "type": "string",
+                    "description": "Id do estado o qual a cidade faz parte"
+                  }
+                },
+                "example": {
+                  "name": "Campinas",
+                  "stateId": "605f64838dffe902eab7fbe2"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Criado"
+          },
+          "400": {
+            "description": "name e stateId são obrigatórios"
+          },
+          "404": {
+            "description": "Estado não encontrado"
+          },
+          "409": {
+            "description": "Cidade com esse nome já existe"
+          },
+          "403": {
+            "description": "Caso api key não fornecida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Cidades"
+        ],
+        "summary": "Listar todas as cidades",
+        "description": "Lista de todas as cidades, com paginação e filtro",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "description": "chave de api",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Número da página",
+            "schema": {
+              "type": "string",
+              "default": "0"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Número de items retornados por página",
+            "schema": {
+              "type": "string",
+              "default": "10"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "description": "String para filtrar cidades pelo nome",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "stateId",
+            "description": "Id do estado para filtrar apenas cidades de um estado específico",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "id da cidade"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "nome da cidade"
+                      },
+                      "stateId": {
+                        "type": "string",
+                        "description": "id do estado a qual a cidade faz parte"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "description": "data de criação da cidade no banco de dados"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "description": "data da ultima atualização da cidade no banco de dados"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos"
+          },
+          "403": {
+            "description": "Caso api key não fornecida"
+          }
+        }
+      }
+    },
+    "/api/cities/{id}": {
+      "put": {
+        "tags": [
+          "Cidades"
+        ],
+        "summary": "Fazer atualização de uma cidade",
+        "description": "Atualizar os dados de uma cidade",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "description": "chave de api",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id da cidade que será atualizada",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Novo nome da cidade"
+                  },
+                  "stateId": {
+                    "type": "string",
+                    "description": "Id do estado o qual a cidade irá fazer parte"
+                  }
+                },
+                "example": {
+                  "name": "Campinas",
+                  "stateId": "605f64838dffe902eab7fbe2"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualizado com sucesso"
+          },
+          "400": {
+            "description": "pelo menos um dos campos deve ser enviado"
+          },
+          "404": {
+            "description": "Estado ou cidade não encontrado"
+          },
+          "403": {
+            "description": "Caso api key não fornecida"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cidades"
+        ],
+        "summary": "Deletar uma cidade",
+        "description": "Deletar uma cidade pelo id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "description": "chave de api",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id da cidade que será deletada",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Deletado com sucesso"
+          },
+          "400": {
+            "description": "id é obrigatório"
+          },
+          "404": {
+            "description": "Cidade não encontrada"
+          },
+          "403": {
+            "description": "Caso api key não fornecida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Cidades"
+        ],
+        "summary": "Listar apenas uma cidade",
+        "description": "Listar os dados de uma cidade específica",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "description": "chave de api",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "id da cidade"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "nome da cidade"
+                    },
+                    "stateId": {
+                      "type": "string",
+                      "description": "id do estado a qual a cidade faz parte"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "description": "data de criação da cidade no banco de dados"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "description": "data da ultima atualização da cidade no banco de dados"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id é obrigatório"
+          },
+          "404": {
+            "description": "Cidade não encontrada"
+          },
+          "403": {
+            "description": "Caso api key não fornecida"
+          }
+        }
+      }
+    },
+    "/api/states": {
+      "post": {
+        "tags": [
+          "Estados"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "description": "chave de api",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Criar um estado",
+        "description": "Criar um novo estado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Nome do estado"
+                  },
+                  "abbreviation": {
+                    "type": "string",
+                    "description": "Abreviação do estado"
+                  }
+                },
+                "example": {
+                  "name": "São Paulo",
+                  "abbreviation": "SP"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Criado"
+          },
+          "400": {
+            "description": "name e abbreviation são obrigatórios"
+          },
+          "409": {
+            "description": "Estado com esse nome já existe"
+          },
+          "403": {
+            "description": "Caso api key não fornecida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Estados"
+        ],
+        "summary": "Listar todos os estados",
+        "description": "Lista de todos os estados, com paginação e filtro",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "description": "chave de api",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Número da página",
+            "schema": {
+              "type": "string",
+              "default": "0"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Número de items retornados por página",
+            "schema": {
+              "type": "string",
+              "default": "10"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "description": "String para filtrar cidades pelo nome",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "abbreviation",
+            "description": "String para filtrar cidades pela abreviação",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "id do estado"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "nome do estado"
+                      },
+                      "abbreviation": {
+                        "type": "string",
+                        "description": "abreviação do estado"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "description": "data de criação do estado no banco de dados"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "description": "data da ultima atualização do estado no banco de dados"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos"
+          },
+          "403": {
+            "description": "Caso api key não fornecida"
+          }
+        }
+      }
+    },
+    "/api/states/{id}": {
+      "put": {
+        "tags": [
+          "Estados"
+        ],
+        "summary": "Fazer atualização de um estado",
+        "description": "Atualizar os dados de um estado",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "description": "chave de api",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id do estado que será atualizado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Novo nome do estado"
+                  },
+                  "abbreviation": {
+                    "type": "string",
+                    "description": "Nova abreviação do estado"
+                  }
+                },
+                "example": {
+                  "name": "São Paulo",
+                  "abreviação": "SP"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualizado com sucesso"
+          },
+          "400": {
+            "description": "pelo menos um dos campos deve ser enviado"
+          },
+          "404": {
+            "description": "Estado não encontrado"
+          },
+          "403": {
+            "description": "Caso api key não fornecida"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Estados"
+        ],
+        "summary": "Deletar um estado",
+        "description": "Deletar um estado pelo id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "description": "chave de api",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id do estado que será deletado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Deletado com sucesso"
+          },
+          "400": {
+            "description": "id é obrigatório"
+          },
+          "404": {
+            "description": "Estado não encontrada"
+          },
+          "403": {
+            "description": "Caso api key não fornecida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Estados"
+        ],
+        "summary": "Listar apenas um estado",
+        "description": "Listar os dados de um estado específico",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "description": "chave de api",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "id do estado"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "nome do estado"
+                    },
+                    "abbreviation": {
+                      "type": "string",
+                      "description": "abreviação do estado"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "description": "data de criação do estado no banco de dados"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "description": "data da ultima atualização do estado no banco de dados"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id é obrigatório"
+          },
+          "404": {
+            "description": "Estado não encontrado"
+          },
+          "403": {
+            "description": "Caso api key não fornecida"
+          }
+        }
+      }
+    }
   }
 }

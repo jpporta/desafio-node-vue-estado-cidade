@@ -21,11 +21,17 @@ services:
     volumes:
       - ./backend:/usr/app/
     network_mode: host
-  # frontend:
-  #   build: ./frontend
-  #   container_name: frontend
-  #   ports: 
-  #     - 80:8080
-  #   volumes:
-  #     - ./frontend:/usr/app
-  #   network_mode: host
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - 8080:8080
+    volumes:
+      - ./frontend:/usr/app
+    network_mode: host
+  redis:
+    image: redis
+    command: redis-server --requirepass meaprovazoox
+    ports:
+      - 6379:6379
+    network_mode: host
