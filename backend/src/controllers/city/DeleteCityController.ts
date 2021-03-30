@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Cache } from '../../database/cache'
 
 import { DeleteCityService } from '../../services/city/DeleteCityService'
 
@@ -7,6 +8,8 @@ class DeleteCityController {
     const { id } = req.params
     try {
       await DeleteCityService.call(id)
+      await Cache.delete('city-list-*')
+      await Cache.delete(`city-${id}`)
     } catch (err) {
       if (!err.code || (err.code && err.code < 100)) return res.status(500).json({ error: err })
       return res.status(err.code).json({ error: err.msg })
