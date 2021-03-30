@@ -3,9 +3,12 @@ import { City } from '../../database/schema/City'
 class ListCitiesService {
   static async call(pageParam: string = '0', limitParam: string = '10', name: string, stateId: string) {
 
-    const limit = Number.parseInt(limitParam)
-    const page = Number.parseInt(pageParam)
-    if (limit === undefined || page === undefined) throw { code: 400, msg: "Invalid pagination" }
+    let limit, page;
+
+    limit = Number.parseInt(limitParam)
+    page = Number.parseInt(pageParam)
+
+    if (isNaN(limit) || isNaN(page)) throw { code: 400, msg: "Invalid pagination" }
     // set filters
     const filters: { [k: string]: any } = {}
     if (name) filters.name = new RegExp(name, 'i')

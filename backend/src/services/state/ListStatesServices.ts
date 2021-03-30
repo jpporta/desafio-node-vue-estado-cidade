@@ -5,7 +5,7 @@ class ListStatesService {
   static async call(pageParam: string = '0', limitParam: string = '10', name: string, abbreviation: string) {
     const limit = Number.parseInt(limitParam)
     const page = Number.parseInt(pageParam)
-    if (limit === undefined || page === undefined) throw { code: 400, msg: "Invalid pagination" }
+    if (isNaN(limit) || isNaN(page)) throw { code: 400, msg: "Invalid pagination" }
     // set filters
     const filters: { [k: string]: any } = {}
     if (name) filters.name = new RegExp(name, 'i')

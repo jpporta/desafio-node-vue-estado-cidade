@@ -4,12 +4,14 @@ class UpdateStateService {
     // check if at least one field to update
     if (!name && !abbreviation) throw { code: 400, msg: "at least name or abbreviation should be sent" }
     // check if updating item exists
+    let stateExists
     try {
-      const stateExists = await State.findOne({ _id: id })
-      if (!stateExists) throw { code: 404, msg: 'State not found' }
+      stateExists = await State.findOne({ _id: id })
     } catch (err) {
+      console.log('update', err)
       throw { code: 500, msg: err }
     }
+    if (!stateExists) throw { code: 404, msg: 'State not found' }
     // build update body
     const newFields: { [k: string]: any } = {}
     if (name) newFields.name = name
