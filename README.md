@@ -21,3 +21,13 @@ http://localhost:8080/
 
 Para visualizar a documentação da api acesse:
 http://localhost:3333/api-docs/
+
+Para esse projeto, como POC e como exemplo a seguinte chave de api é utilizada:
+
+```
+%7M!$)Y7A(Md25T@y2XXM0$ce$b4(k648mD%j0g%ptp(*UgA12
+```
+e para qualquer chamada ao backend deve utiliza-la no header com:
+```
+x-api-key: %7M!$)Y7A(Md25T@y2XXM0$ce$b4(k648mD%j0g%ptp(*UgA12
+```
